@@ -1,32 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-function backend_layout($content, $data = [])
-{
-  $ci = get_instance();
-  $ci->load->model('M_Main', 'main');
-
-  $csrf_renewed = $ci->security->get_csrf_hash();
-
-  $menu     = $ci->main->getMenu();
-  $mainLogo = $ci->main->getMainLogo(['csrf_renewed' => $csrf_renewed]);
-
-  $send = [
-    'menu'     => $menu['status'] ? $menu['data'] : [],
-    'mainLogo' => $mainLogo['status'] ? $mainLogo['data'] : [],
-  ];
-  
-  $data = array_merge($data, $send);
-
-  $ci->load->view('layout/header', $data);
-  $ci->load->view('layout/sidebar');
-  $ci->load->view('layout/breadcrumb');
-  $ci->load->view($content);
-  $ci->load->view('layout/footer');
-  
-  return true;
-}
-
 function insertAuditlog($data = [])
 {
   $ci = get_instance();
@@ -52,34 +26,10 @@ function insertAuditlog($data = [])
   return ['status' => true, 'message' => 'Berhasil merekam data ke auditlog.', 'data' => $send];
 }
 
-function requestModel($modelPath, $function, $data = [], $responseType = 'normal')
+function responseModelFalse($message, $error, $data = [])
 {
-  $ci = get_instance();
-  $ci->load->model($modelPath, 'model');
-
-  $user = getSession('user');
-  $user = $user ? arrayToObject($user) : [];
-
-  $send = [
-    'csrf_renewed' => $ci->security->get_csrf_hash(),
-    'idUser'       => isset($user->id) ? $user->id : 0,
-    'idRole'       => isset($user->idRole) ? $user->idRole : 0,
-    'username'     => isset($user->username) ? $user->username : '',
-    'email'        => isset($user->email) ? $user->email : '',
-    'responseType' => $responseType
-  ];
-
-  $send    = array_merge($send, $data);
-  $request = $ci->model->$function($send);
-
-  return $request;
-}
-
-function responseModelFalse($message, $error, $data = [], $responseType = 'normal')
-{
-  $ci = get_instance();
-
-  $data = array_merge($data, ['error' => $error, 'csrf_renewed' => $ci->security->get_csrf_hash()]);
+  $csrf_renewed = trim(isset($_POST['csrf_renewed']) ? $_POST['csrf_renewed'] : '');
+  $data         = array_merge($data, ['error' => $error, 'csrf_renewed' => $csrf_renewed]);
 
   $response = [
     'status'  => false,
@@ -87,28 +37,19 @@ function responseModelFalse($message, $error, $data = [], $responseType = 'norma
     'data'    => $data
   ];
 
-  if ($responseType == 'object') {
-    return arrayToObject($response);
-  }
-
   return $response;
 }
 
-function responseModelTrue($message, $data = [], $responseType = 'normal')
+function responseModelTrue($message, $data = [])
 {
-  $ci = get_instance();
-
-  $data = array_merge((array) $data, ['csrf_renewed' => $ci->security->get_csrf_hash()]);
+  $csrf_renewed = trim(isset($_POST['csrf_renewed']) ? $_POST['csrf_renewed'] : '');
+  $data         = array_merge($data, ['csrf_renewed' => $csrf_renewed]);
 
   $response = [
     'status'  => true,
     'message' => $message,
     'data'    => $data
   ];
-
-  if ($responseType == 'object') {
-    return arrayToObject($response);
-  }
 
   return $response;
 }
