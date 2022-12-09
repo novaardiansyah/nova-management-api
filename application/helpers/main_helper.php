@@ -28,7 +28,7 @@ function insertAuditlog($data = [])
 
 function responseModelFalse($message, $error, $data = [])
 {
-  $csrf_renewed = trim(isset($_POST['csrf_renewed']) ? $_POST['csrf_renewed'] : '');
+  $csrf_renewed = trim(isset($_POST['csrf_renewed']) ? $_POST['csrf_renewed'] : random_tokens(16));
   $data         = array_merge($data, ['error' => $error, 'csrf_renewed' => $csrf_renewed]);
 
   $response = [
@@ -42,7 +42,7 @@ function responseModelFalse($message, $error, $data = [])
 
 function responseModelTrue($message, $data = [])
 {
-  $csrf_renewed = trim(isset($_POST['csrf_renewed']) ? $_POST['csrf_renewed'] : '');
+  $csrf_renewed = trim(isset($_POST['csrf_renewed']) ? $_POST['csrf_renewed'] : random_tokens(16));
   $data         = array_merge($data, ['csrf_renewed' => $csrf_renewed]);
 
   $response = [
