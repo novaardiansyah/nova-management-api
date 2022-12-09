@@ -1,0 +1,30 @@
+{
+  "related-information": {
+    "composer-install": {
+      "command": "composer install",
+      "description": "Install dependencies from composer.lock",
+      "url": "https://getcomposer.org/doc/03-cli.md#install"
+    }
+  },
+  "search-information": {
+    "issues": [
+      {
+        "title": "Call to undefined method MY_Loader::_ci_object_to_array()",
+        "url": "https://stackoverflow.com/questions/41557760/codeigniter-hmvc-object-to-array-error"
+      },
+      {
+        "title": "strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior | MX/Router.php:239",
+        "url": "https://www.initekno.com/error-di-router-codeigniter-versi-3-1-10-dan-php-7/",
+        "solution": "replace with 'if ($suffix && strpos($class, $suffix) === FALSE)'"
+      },
+      {
+        "title": "Error: MySQL Shutdown Unexpectedly.",
+        "ur": "https://stackoverflow.com/questions/18022809/how-to-solve-error-mysql-shutdown-unexpectedly"
+      },
+      {
+        "title": "Error: Xampp Control Panel Is Not Showing.",
+        "ur": "https://stackoverflow.com/questions/46627164/xampp-control-panel-is-not-showing"
+      }
+    ]
+  }
+}
