@@ -3,23 +3,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use chriskacerguis\RestServer\RestController;
 
-class Oauth extends RestController
+class Auth extends RestController
 {
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('Oauth_api', 'api');
+    $this->load->model('Auth_api', 'api');
   }
 
   public function login_post()
   {
     $result = $this->api->login($_POST);
-    $result ? $this->response($result, 200) : $this->response(['data' => []], 404);
-  }
-
-  public function custom_encryption_post()
-  {
-    $result = $this->api->custom_encryption($_POST);
+    $this->response($result, 200); exit;
     $result ? $this->response($result, 200) : $this->response(['data' => []], 404);
   }
 }

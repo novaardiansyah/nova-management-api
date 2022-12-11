@@ -170,13 +170,6 @@ function arrayToObject($array)
   }
 }
 
-function encryptKey($string, $type = 'encrypt_key', $algo = 'sha256')
-{
-  $value  = $string . getKey($type);
-  $result = hash($algo, $value);
-  return $result;
-}
-
 function random_tokens($length, $type = null, $seconds = false)
 {
   $token = "";
