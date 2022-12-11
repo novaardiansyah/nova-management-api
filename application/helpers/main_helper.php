@@ -1,6 +1,10 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Dotenv\Dotenv;
+
 function insertAuditlog($data = [])
 {
   $ci = get_instance();
@@ -52,4 +56,21 @@ function responseModelTrue($message, $data = [])
   ];
 
   return $response;
+}
+
+function validateAccessToken()
+{
+  $dotenv = Dotenv::createImmutable(dirname(__FILE__, 3));
+  $dotenv->load();
+
+  $headers       = getallheaders();
+  $authorization = isset($headers['Authorization']) ? $headers['Authorization'] : '';
+  $token         = $authorization ? create_array($authorization, ' ')[1] : 'invalid-token';
+
+  try {
+    JWT::decode($token, new Key($_ENV['ACCESS_TOKEN'], 'HS256'));
+    return true;
+  } catch (Exception $error) {
+    return responseModelFalse('Invalid access token, your request was rejected.', 'CLP1A');
+  }
 }
