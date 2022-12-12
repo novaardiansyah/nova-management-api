@@ -14,9 +14,9 @@ function custom_encryption($string)
   return custom_encode($string);
 }
 
-function getAccessToken($email)
+function getAccessToken($email, $hours = 1)
 {
-  $expired_time  = getTimes('+1 hour', 'Y-m-d H:i:s');
+  $expired_time  = getTimes("+$hours hour", 'Y-m-d H:i:s');
   $_expired_time = strtotime($expired_time);
 
   $payload = [
