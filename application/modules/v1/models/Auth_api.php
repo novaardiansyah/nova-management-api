@@ -44,7 +44,7 @@ class Auth_api extends CI_Model
     ];
     $this->db->insert('tokens', $s_token);
     
-    $accessToken = getAccessToken($user->email);
+    $accessToken = getAccessToken($user->email, (24 * 7));
 
     $s_accessToken = [
       'idUser'     => $user->id,
@@ -68,11 +68,11 @@ class Auth_api extends CI_Model
         'activate_at' => $user->activate_at
       ],
       'token' => [
-        'name'       => 'token-login',
+        'name'       => 'login-token',
         'value'      => $s_token['token'] . ';' . custom_encode($user->id) . ';' . custom_encode(2),
         'expired_at' => $s_token['expired_at']
       ],
-      'access-token' => [
+      'accessToken' => [
         'name'       => 'access-token',
         'value'      => $accessToken['accessToken'],
         'expired_at' => $accessToken['expired_at']
@@ -81,5 +81,52 @@ class Auth_api extends CI_Model
 
     $this->db->update('users', ['last_on' => getTimes('now')], ['id' => $user->id]);
     return responseModelTrue('Login successfully please wait a moment.', $response);
+  }
+
+  public function validateTokens($data = [])
+  {
+    $log_idUser = trim(isset($data['log_idUser']) ? $data['log_idUser'] : '');
+    $userId     = $log_idUser ? custom_decode($log_idUser) : '';
+
+    $loginToken  = trim(isset($data['loginToken']) ? $data['loginToken'] : '');
+    $accessToken = trim(isset($data['accessToken']) ? $data['accessToken'] : '');
+
+    $validateLoginToken  = $this->validateLoginToken($loginToken, $userId);
+    if (!$validateLoginToken['status']) return responseModelFalse($validateLoginToken['message'], $validateLoginToken['error'], ['loginToken' => $loginToken]);
+
+    $validateAccessToken = $this->validateAccessToken($accessToken, $userId);
+    if (!$validateAccessToken['status']) return responseModelFalse($validateAccessToken['message'], $validateAccessToken['error'], ['accessToken' => $accessToken]);
+
+    return responseModelTrue('Your token is valid.', ['loginToken' => $loginToken, 'accessToken' => $validateAccessToken]);
+  }
+
+  public function validateLoginToken($loginToken, $userId)
+  {
+    $token = $this->db->query("SELECT a.id, a.idUser, a.idType, a.token, a.isActive, a.expired_at FROM tokens AS a WHERE a.isActive = 1 AND a.idUser = '$userId' AND a.idType = 2")->row();
+    
+    if (empty($token)) return ['status' => false, 'message' => 'Login token is not valid.', 'error' => 'N9UW2'];  
+    if ($token->token !== $loginToken) return ['status' => false, 'message' => 'Login token is not valid.', 'error' => '1XSA1'];
+
+    if (format_date($token->expired_at, 'Y-m-d H:i:s') < getTimes('now')) {
+      $this->db->delete('tokens', ['id' => $token->id]);
+      return ['status' => false, 'message' => 'Login token has expired.', 'error' => '1XSA1'];
+    }
+
+    return ['status' => true, 'message' => 'Login token is valid.', 'token' => $token];
+  }
+
+  public function validateAccessToken($accessToken, $userId)
+  {
+    $token = $this->db->query("SELECT a.id, a.idUser, a.idType, a.token, a.isActive, a.expired_at FROM tokens AS a WHERE a.isActive = 1 AND a.idUser = '$userId' AND a.idType = 3")->row();
+
+    if (empty($token)) return ['status' => false, 'message' => 'Access token is not valid.', 'error' => 'CEWSA'];
+    if ($token->token != $accessToken) return ['status' => false, 'message' => 'Access token is not valid.', 'error' => 'A8GD4'];
+
+    if (format_date($token->expired_at, 'Y-m-d H:i:s') < getTimes('now')) {
+      $this->db->delete('tokens', ['id' => $token->id]);
+      return ['status' => false, 'message' => 'Access token has expired.', 'error' => 'O17DO'];
+    }
+
+    return ['status' => true, 'message' => 'Access token is valid.', 'token' => $token];
   }
 }
