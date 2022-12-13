@@ -71,6 +71,6 @@ function validateAccessToken()
     JWT::decode($token, new Key($_ENV['ACCESS_TOKEN'], 'HS256'));
     return true;
   } catch (Exception $error) {
-    return responseModelFalse('Invalid access token, your request was rejected.', 'CLP1A');
+    return responseModelFalse('Invalid access token, your request was rejected.', 'CLP1A', ['accessToken' => $token]);
   }
 }

@@ -40,11 +40,11 @@ class Auth_api extends CI_Model
       'isActive'   => 1,
       'created_by' => 1,
       'created_at' => getTimes('now'),
-      'expired_at' => getTimes('+7 day', 'Y-m-d') . ' 23:59:59'
+      'expired_at' => getTimes('+3 day', 'Y-m-d') . ' 23:59:59'
     ];
     $this->db->insert('tokens', $s_token);
     
-    $accessToken = getAccessToken($user->email, (24 * 7));
+    $accessToken = getAccessToken($user->email, (24 * 3));
 
     $s_accessToken = [
       'idUser'     => $user->id,
@@ -117,6 +117,9 @@ class Auth_api extends CI_Model
 
   public function validateAccessToken($accessToken, $userId)
   {
+    $validateToken = validateAccessToken();
+    if ($validateToken !== true) return $validateToken;
+
     $token = $this->db->query("SELECT a.id, a.idUser, a.idType, a.token, a.isActive, a.expired_at FROM tokens AS a WHERE a.isActive = 1 AND a.idUser = '$userId' AND a.idType = 3")->row();
 
     if (empty($token)) return ['status' => false, 'message' => 'Access token is not valid.', 'error' => 'CEWSA'];

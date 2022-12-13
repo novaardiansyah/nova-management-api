@@ -21,7 +21,6 @@ class Auth extends RestController
   public function validateTokens_post()
   {
     $result = $this->api->validateTokens($_POST);
-    $this->response($result, 200); exit;
     $result ? $this->response($result, 200) : $this->response(['data' => []], 404);
   }
 }
