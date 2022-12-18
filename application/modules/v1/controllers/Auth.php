@@ -23,4 +23,10 @@ class Auth extends RestController
     $result = $this->api->validateTokens($_POST);
     $result ? $this->response($result, 200) : $this->response(['data' => []], 404);
   }
+
+  public function getMainLogo_post()
+  {
+    $result = $this->api->getMainLogo($_POST);
+    $result ? $this->response($result, 200) : $this->response(['data' => []], 404);
+  }
 }

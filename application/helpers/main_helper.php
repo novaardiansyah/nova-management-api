@@ -74,3 +74,24 @@ function validateAccessToken()
     return responseModelFalse('Invalid access token, your request was rejected.', 'CLP1A', ['accessToken' => $token]);
   }
 }
+
+function cquery($query, $where = [], $result = 'row_array')
+{
+  $ci = get_instance();
+
+  $str_where = 'WHERE';
+  if ($where) {
+    foreach ($where as $key => $value) {
+      $str_where .= " AND $key = '$value'";
+    }
+  }
+
+  $query = $query . ' ' . $str_where;
+  
+  if ($result == 'row_array') {
+    return $query;
+  }
+  return $query;
+
+  // return $ci->db->query($query)->result_array();
+}
