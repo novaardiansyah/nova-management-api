@@ -22,19 +22,21 @@ class Auth_api extends CI_Model
     $_password    = trim(isset($data['password']) ? $data['password'] : '');
     $password     = custom_encryption($_password);
     
-    $user = $this->db->query("SELECT a.id, a.idRole, a.username, a.email, a.isActive, a.isDeleted, a.activate_at, b.name AS nameRole
+    $user = cquery("SELECT a.id, a.idRole, a.username, a.email, a.isActive, a.isDeleted, a.activate_at, b.name AS nameRole
       FROM users AS a
-    INNER JOIN role AS b ON a.idRole = b.id WHERE a.username = '$username' AND a.password = '$password'")->row();
-    
+    INNER JOIN role AS b ON a.idRole = b.id", ['a.username' => $username, 'a.password' => $password]);
+
+    return responseModelFalse('Username or password is wrong', '0001', $user);
+
     if (empty($user)) return responseModelFalse('Your username or password is wrong.', '64B7L');
 
-    if ((int) $user->isDeleted == 1) return responseModelFalse('Account has been deleted, if this is an error please contact customer support.', 'IBC54');
+    if ((int) $user['isDeleted'] == 1) return responseModelFalse('Account has been deleted, if this is an error please contact customer support.', 'IBC54');
 
-    $this->db->delete('tokens', ['idUser' => $user->id, 'idType' => 2]);
-    $this->db->delete('tokens', ['idUser' => $user->id, 'idType' => 3]);
+    $this->db->query('DELETE FROM tokens WHERE idUser = ? AND idType = ?', [$user['id'], 2]);
+    $this->db->query('DELETE FROM tokens WHERE idUser = ? AND idType = ?', [$user['id'], 3]);
 
     $s_token = [
-      'idUser'     => $user->id,
+      'idUser'     => $user['id'],
       'idType'     => 2,
       'token'      => random_tokens(63, null, true),
       'isActive'   => 1,
@@ -42,12 +44,21 @@ class Auth_api extends CI_Model
       'created_at' => getTimes('now'),
       'expired_at' => getTimes('+3 day', 'Y-m-d') . ' 23:59:59'
     ];
-    $this->db->insert('tokens', $s_token);
+
+    $this->db->query("INSERT INTO tokens (idUser, idType, token, isActive, created_by, created_at, expired_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+      $s_token['idUser'],
+      $s_token['idType'],
+      $s_token['token'],
+      $s_token['isActive'],
+      $s_token['created_by'],
+      $s_token['created_at'],
+      $s_token['expired_at']
+    ]);
     
-    $accessToken = getAccessToken($user->email, (24 * 3));
+    $accessToken = getAccessToken($user['email'], (24 * 3));
 
     $s_accessToken = [
-      'idUser'     => $user->id,
+      'idUser'     => $user['id'],
       'idType'     => 3,
       'token'      => $accessToken['accessToken'],
       'isActive'   => 1,
@@ -55,21 +66,30 @@ class Auth_api extends CI_Model
       'created_at' => getTimes('now'),
       'expired_at' => $accessToken['expired_at']
     ];
-    $this->db->insert('tokens', $s_accessToken);
+    
+    $this->db->query("INSERT INTO tokens (idUser, idType, token, isActive, created_by, created_at, expired_at) VALUES (?, ?, ?, ?, ?, ?, ?)", [
+      $s_accessToken['idUser'],
+      $s_accessToken['idType'],
+      $s_accessToken['token'],
+      $s_accessToken['isActive'],
+      $s_accessToken['created_by'],
+      $s_accessToken['created_at'],
+      $s_accessToken['expired_at']
+    ]);
 
     $response = [
       'user'  => [
-        'id'          => custom_encode($user->id),
-        'idRole'      => custom_encode($user->idRole),
-        'nameRole'    => $user->nameRole,
-        'username'    => $user->username,
-        'email'       => $user->email,
-        'isActive'    => $user->isActive,
-        'activate_at' => $user->activate_at
+        'id'          => custom_encode($user['id']),
+        'idRole'      => custom_encode($user['idRole']),
+        'nameRole'    => $user['nameRole'],
+        'username'    => $user['username'],
+        'email'       => $user['email'],
+        'isActive'    => $user['isActive'],
+        'activate_at' => $user['activate_at']
       ],
       'token' => [
         'name'       => 'login-token',
-        'value'      => $s_token['token'] . ';' . custom_encode($user->id) . ';' . custom_encode(2),
+        'value'      => $s_token['token'] . ';' . custom_encode($user['id']) . ';' . custom_encode(2),
         'expired_at' => $s_token['expired_at']
       ],
       'accessToken' => [
@@ -79,7 +99,7 @@ class Auth_api extends CI_Model
       ]
     ];
 
-    $this->db->update('users', ['last_on' => getTimes('now')], ['id' => $user->id]);
+    $this->db->query("UPDATE users SET last_on = ? WHERE id = ?", [getTimes('now'), $user['id']]);
     return responseModelTrue('Login successfully please wait a moment.', $response);
   }
 
@@ -131,5 +151,14 @@ class Auth_api extends CI_Model
     }
 
     return ['status' => true, 'message' => 'Access token is valid.', 'token' => $token];
+  }
+
+  public function getMainLogo($data = [])
+  {
+    $result = $this->db->query("SELECT a.id, a.name, a.path, a.isActive, a.isDeleted FROM assets AS a WHERE a.id = 1 AND a.isActive = 1 AND a.isDeleted = 0")->row_array();
+
+    if (empty($result)) return responseModelFalse('Main logo not found.', 'TSYFD');
+
+    return responseModelTrue('Main logo found.', $result);
   }
 }

@@ -70,38 +70,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(dirname(__FILE__, 3));
+$dotenv->load();
+
 $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = [
-	'dsn'          => '',
-	'hostname'     => 'localhost',
-	'username'     => 'root',
-	'password'     => '',
-	'database'     => 'nova-management',
-	'dbdriver'     => 'mysqli',
-	'dbprefix'     => '',
-	'pconnect'     => FALSE,
-	'db_debug'     => (ENVIRONMENT !== 'production'),
-	'cache_on'     => FALSE,
-	'cachedir'     => '',
-	'char_set'     => 'utf8',
-	'dbcollat'     => 'utf8_general_ci',
-	'swap_pre'     => '',
-	'encrypt'      => FALSE,
-	'compress'     => FALSE,
-	'stricton'     => FALSE,
-	'failover'     => array(),
-	'save_queries' => TRUE
-];
-
-$db['is-best.net'] = [
-	'dsn'          => '',
-	'hostname'     => 'sql310.epizy.com',
-	'username'     => 'epiz_31844052',
-	'password'     => 'uPbJkZWVVWW',
-	'database'     => 'epiz_31844052_nova_management',
-	'dbdriver'     => 'mysqli',
+	'dsn'          => $_ENV['DB_DSN'],
+	'username'     => $_ENV['DB_USERNAME'],
+	'password'     => $_ENV['DB_PASSWORD'],
+	'database'     => $_ENV['DB_NAME'],
+	'dbdriver'     => $_ENV['DB_DRIVER'],
+	'port'         => $_ENV['DB_PORT'],
 	'dbprefix'     => '',
 	'pconnect'     => FALSE,
 	'db_debug'     => (ENVIRONMENT !== 'production'),
