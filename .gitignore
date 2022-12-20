@@ -35,3 +35,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 .env
 public/hidden/*
 node_modules/
+node_modules.zip
+postman/*
