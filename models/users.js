@@ -3,7 +3,8 @@ import mongoose from 'mongoose'
 const usersSchema = new mongoose.Schema({
   'username': {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   'password': {
     type: String,
@@ -11,12 +12,18 @@ const usersSchema = new mongoose.Schema({
   },
   'email': {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  'roleId': {
+  'role': {
     type: String,
     required: false,
     default: 'customer'
+  },
+  'token': {
+    type: Object,
+    required: false,
+    default: {}
   },
   'lastOnline': {
     type: Date,
