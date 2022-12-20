@@ -1,0 +1,21 @@
+GET http://localhost:5000/users/63a00d0cfd331a2d44801a86
+
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+  "username": "superadmin",
+  "email": "superadmin@nova",
+  "password": "123456",
+  "roleId": 1,
+  "createdBy": 1
+}
+
+PATCH http://localhost:5000/users/63a00ff4521bb24ea8468e70
+Content-Type: application/json
+
+{
+  "email": "superadmin@nova"
+}
+
+DELETE http://localhost:5000/users/63a00d0cfd331a2d44801a86
