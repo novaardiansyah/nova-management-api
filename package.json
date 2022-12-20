@@ -1,0 +1,23 @@
+{
+  "name": "nova-management-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Nova Ardiansyah <novaardiansyah78@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.13"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
