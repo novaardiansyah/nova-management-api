@@ -1,0 +1,7 @@
+POST http://localhost:5000/roles/store
+Content-Type: application/json
+
+{
+  "name": "Customer",
+  "isActive": true
+}

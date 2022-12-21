@@ -28,4 +28,14 @@ export function randomTokens(length = 32, type = 'base64') {
   return cryptoRandomString({length, type})
 }
 
-export default { responseAPI, randomTokens }
+export function getTimestamp({plus = 0, minus = 0} = {}) {
+  let timestamp = Date.now()
+
+  if (plus > 0) return timestamp = timestamp + (1000 * 60 * 60 * plus)
+
+  if (minus > 0) return timestamp = timestamp - (1000 * 60 * 60 * minus)
+
+  return timestamp
+}
+
+export default { responseAPI, randomTokens, getTimestamp }

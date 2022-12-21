@@ -1,0 +1,10 @@
+POST http://localhost:5000/submenu/store
+Content-Type: application/json
+
+{
+  "menuId": "63a2b8592f47324158b47e5e",
+  "name": "Contact Us",
+  "link": "/customerService/contactUs",
+  "sortOrder": 1,
+  "isActive": true
+}
