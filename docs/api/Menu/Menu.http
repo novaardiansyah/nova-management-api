@@ -1,0 +1,10 @@
+POST http://localhost:5000/menu/store
+Content-Type: application/json
+
+{
+  "name": "Testing",
+  "icon": "bi bi-books",
+  "link": "/",
+  "sortOrder": 1,
+  "isActive": true
+}

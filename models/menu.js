@@ -1,41 +1,29 @@
 import mongoose from 'mongoose'
 
-const usersSchema = new mongoose.Schema({
-  'username': {
-    type: String,
-    required: true,
-    unique: true
-  },
-  'password': {
+const menuSchema = new mongoose.Schema({
+  'name' : {
     type: String,
     required: true
   },
-  'email': {
+  'icon': {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
-  'role': {
+  'link': {
     type: String,
-    required: false,
-    default: '63a2c29c9c2d2a1ba407137b' // * Customer
+    required: true
   },
-  'lastOnline': {
-    type: Date,
+  'sortOrder': {
+    type: Number,
     required: true,
-    default: Date.now
-  },
-  'activatedAt': {
-    type: Date,
-    required: false,
-    default: null
+    default: 0
   },
   'isActive': {
     type: Boolean,
     required: true,
-    default: false
+    default: true
   },
-  'isBanned': {
+  'isDeleted': {
     type: Boolean,
     required: true,
     default: false
@@ -43,7 +31,7 @@ const usersSchema = new mongoose.Schema({
   'createdBy': {
     type: String,
     required: false,
-    default: "001"
+    default: null
   },
   'updatedBy': {
     type: String,
@@ -72,4 +60,4 @@ const usersSchema = new mongoose.Schema({
   }
 })
 
-export default mongoose.model('Users', usersSchema)
+export default mongoose.model('Menu', menuSchema)

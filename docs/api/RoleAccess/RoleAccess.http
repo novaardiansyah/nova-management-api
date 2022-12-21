@@ -1,0 +1,8 @@
+POST http://localhost:5000/roleAccess/store
+Content-Type: application/json
+
+{
+  "roleId": "63a2c2849c2d2a1ba4071375",
+  "menu": ["63a2b32d2f47324158b47e54"],
+  "isActive": true
+}

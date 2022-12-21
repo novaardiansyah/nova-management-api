@@ -1,57 +1,49 @@
 import mongoose from 'mongoose'
 
-const usersSchema = new mongoose.Schema({
-  'username': {
-    type: String,
-    required: true,
-    unique: true
-  },
-  'password': {
-    type: String,
+const roleAccessSchema = new mongoose.Schema({
+  'roleId': {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Role',
+    unique: true,
     required: true
   },
-  'email': {
-    type: String,
+  'menu': {
+    type: Array,
     required: true,
-    unique: true
+    default: [],
+    ref: 'Menu'
   },
-  'role': {
-    type: String,
-    required: false,
-    default: '63a2c29c9c2d2a1ba407137b' // * Customer
-  },
-  'lastOnline': {
-    type: Date,
+  'submenu': {
+    type: Array,
     required: true,
-    default: Date.now
-  },
-  'activatedAt': {
-    type: Date,
-    required: false,
-    default: null
+    default: [],
+    ref: 'Submenu'
   },
   'isActive': {
     type: Boolean,
     required: true,
-    default: false
+    default: true
   },
-  'isBanned': {
+  'isDeleted': {
     type: Boolean,
     required: true,
     default: false
   },
   'createdBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
-    default: "001"
+    default: null
   },
   'updatedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
   'deletedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
@@ -72,4 +64,4 @@ const usersSchema = new mongoose.Schema({
   }
 })
 
-export default mongoose.model('Users', usersSchema)
+export default mongoose.model('roleAccess', roleAccessSchema)

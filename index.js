@@ -4,6 +4,10 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 
 import usersRoutes from './routes/users.js'
+import menuRoutes from './routes/menu.js'
+import submenuRoutes from './routes/submenu.js'
+import rolesRoutes from './routes/roles.js'
+import roleAccessRoutes from './routes/roleAccess.js'
 import authRoutes from './routes/auth.js'
 
 dotenv.config()
@@ -14,6 +18,10 @@ const PORT = process.env.PORT
 app.use(bodyParser.json())
 
 app.use('/users', usersRoutes)
+app.use('/menu', menuRoutes)
+app.use('/submenu', submenuRoutes)
+app.use('/roles', rolesRoutes)
+app.use('/roleAccess', roleAccessRoutes)
 app.use('/auth', authRoutes)
 
 app.get('/', (req, res) => {
