@@ -2,7 +2,7 @@ POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {
-  "username": "customer-1",
+  "username": "superadmin",
   "password": "123456",
-  "email": "customer-1@nova.com"
+  "email": "superadmin@nova.com"
 }

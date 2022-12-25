@@ -1,0 +1,6 @@
+POST http://localhost:5000/roleAccess/get
+Content-Type: application/json
+
+{
+  "roleId": "63a2c2849c2d2a1ba4071375"
+}

@@ -2,7 +2,8 @@ import mongoose from 'mongoose'
 
 const submenuSchema = new mongoose.Schema({
   'menuId' : {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Menu',
     required: true
   },
   'name' : {
@@ -29,17 +30,20 @@ const submenuSchema = new mongoose.Schema({
     default: false
   },
   'createdBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
   'updatedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
   'deletedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },

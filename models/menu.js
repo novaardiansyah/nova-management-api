@@ -18,6 +18,11 @@ const menuSchema = new mongoose.Schema({
     required: true,
     default: 0
   },
+  'isParent': {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   'isActive': {
     type: Boolean,
     required: true,
@@ -29,17 +34,20 @@ const menuSchema = new mongoose.Schema({
     default: false
   },
   'createdBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
   'updatedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
   'deletedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },

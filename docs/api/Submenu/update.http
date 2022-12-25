@@ -1,0 +1,11 @@
+POST http://localhost:5000/submenu/update
+Content-Type: application/json
+
+{
+  "id": "63a2ba21e7bd3d22a831c99d",
+  "menuId": "63a2b8212f47324158b47e56",
+  "name": "Submenu",
+  "link": "/masterData/submenu",
+  "sortOrder": 2,
+  "isActive": true
+}
