@@ -1,0 +1,8 @@
+POST http://localhost:5000/roleAccess/update
+Content-Type: application/json
+
+{
+  "roleId": "63a2c2849c2d2a1ba4071375",
+  "submenu": ["63a2ba15e7bd3d22a831c99b", "63a2ba21e7bd3d22a831c99d", "63a2ba61e7bd3d22a831c99f", "63a2baa0e7bd3d22a831c9a1", "63a2baebe7bd3d22a831c9a3", "63a2bb00e7bd3d22a831c9a5", "63a2bb52e7bd3d22a831c9a7", "63a2bb90e7bd3d22a831c9a9"],
+  "menu": ["63a2b32d2f47324158b47e54", "63a2b8312f47324158b47e58", "63a2b84e2f47324158b47e5c", "63a2b8212f47324158b47e56", "63a2b8592f47324158b47e5e", "63a2b83f2f47324158b47e5a"]
+}

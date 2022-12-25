@@ -1,0 +1,12 @@
+POST http://localhost:5000/menu/update
+Content-Type: application/json
+
+{
+  "id": "63a2b83f2f47324158b47e5a",
+  "name": "Settings",
+  "link": "/setting",
+  "icon": "bi bi-gear",
+  "sortOrder": 5,
+  "isActive": true,
+  "isParent": true
+}

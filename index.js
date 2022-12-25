@@ -24,8 +24,8 @@ app.use('/roles', rolesRoutes)
 app.use('/roleAccess', roleAccessRoutes)
 app.use('/auth', authRoutes)
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
+app.use((req, res, next) => {
+  res.status(404).json({ status: false, message: 'Your Request Was Not found.', data: {} })
 })
 
 mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })

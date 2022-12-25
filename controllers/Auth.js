@@ -51,7 +51,7 @@ export async function login(req, res) {
       expiredAt: tokenSave.expiredAt
     }
 
-    return h_main.responseAPI(req, res, { code: 201, message: 'You have successfully logged in, please wait a moment.', data: { user: result, token: r_token } })
+    return h_main.responseAPI(req, res, { code: 200, message: 'You have successfully logged in, please wait a moment.', data: { user: result, token: r_token } })
   } catch (error) {
     return h_main.responseAPI(req, res, { code: 400, message: error.message })
   }

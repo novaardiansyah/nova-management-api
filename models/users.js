@@ -15,8 +15,9 @@ const usersSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  'role': {
-    type: String,
+  'roleId': {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Roles',
     required: false,
     default: '63a2c29c9c2d2a1ba407137b' // * Customer
   },
@@ -41,17 +42,20 @@ const usersSchema = new mongoose.Schema({
     default: false
   },
   'createdBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
-    default: "001"
+    default: null
   },
   'updatedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
   'deletedBy': {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: false,
     default: null
   },
